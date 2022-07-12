@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using CashMachineApp.Models
+@model CashMachineViewModel
+
+
+<div class="text-center">
+    <h1 class="display-4">Модель банкомата</h1>
+</div>
+<div class="container">
+     @using (Html.BeginForm("SetCassettes", "Home", FormMethod.Post))
+     {
+        <label><strong>Количество кассет</strong></label>
+        <div class="input-group mb-3">
+            <input name="count" type="number" min="1" max="8" class="form-control" value="@Model.Machine.CassettesCount">
+            <div class="input-group-prepend">
+                <input class="btn btn-outline-secondary" type="submit" value="Изменить"/>
+            </div>
+        </div>
+    }
+
+    @using (Html.BeginForm("GetCash", "Home", FormMethod.Post))
+    {
+        <strong>Кассеты</strong> <small>[ всего @Model.Machine.CassettesCount ]</small>
+        <div class="d-flex overflow-auto">
+            @for (var i = 0; i < Model.Machine.Cassettes.Count; i++)
+            {
+            <div class="card card-body" style="max-width: 180px !important; margin-right: 8px; margin-bottom: 5px; padding-top: 17px;">
+                <small style="position: absolute; top:0;">Кассета @(i+1)</small>
+                <div class="form-group">
+                    <label>Кол-во банкнот</label>
+                    <input name="Machine.Cassettes[@i].BanknotesCount" value="@Model.Machine.Cassettes[i].BanknotesCount" type="number" min="0" class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                    <label>Номинал</label>
+                    <select name="Machine.Cassettes[@i].NominalValue" asp-for="Machine.Cassettes[i].NominalValue" asp-items="Model.NominalValues" class="form-control form-control-sm"></select>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <label class="form-check-label">Готова</label>
+                        <input class="form-check-input" asp-for="Machine.Cassettes[i].IsReady" type="checkbox" value=""/>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        <br>
+        <strong>Забрать наличные</strong>
+        <div class="form-group">
+            <label>Сумма</label>
+            <div class="input-group mb-3">
+                <div class="input-group-append">
+                    <span class="input-group-text">руб.</span>
+                </div>
+                <input name="RequestedCash" asp-for="RequestedCash" type="number" min="1" class="form-control">
+                <div class="input-group-prepend">
+                    <input class="btn btn-outline-primary" type="submit" value="Обработать"/>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.IsNew)
+    {
+        @if (Model.OutputCash.Count != 0)
+        {
+            <label>
+                Банкноты: @foreach (var c in Model.OutputCash) { <i style="background-color: lightgray; margin-right: 8px; padding-right:2px;">@c.ToString()</i>}
+                → @Model.OutputCash.Sum(c => (int)c) руб.
+            </label>
+            <br>
+        }  
+        else { <label>Ничего нельзя выдать</label><br> }
+        @if (Model.RemainingCash != 0) { <label>Остаток: <i>@Model.RemainingCash руб.</i></label><br> }
+        <label>Время обработки: <i>@Model.ProcessingTime.TotalMilliseconds мс</i></label>
+    }
+</div>
+<hr/>
+<div class="text-muted container">
+    <strong>Подсказка</strong><br/>
+    Установите количество кассет в аппарате и нажмите <span class="bg-secondary text-white">Изменть</span>, 
+    чтобы обновить данные.
+    В списке кассет можно настроить каждую кассету, после чего введите сумму денег, которую необходимо "обналичить", 
+    и нажмите <span class="bg-secondary text-white">Обработать</span>, чтобы произвести вычисления.
+    Если в аппарате достаточно банкнот (и содержащие их кассеты работают), будет показано, 
+    сколько банкнот некотрого номинала было выдано.
+</div>
+<br>
+<div class="text-center text-muted">
+    <small>Трофимов Илья<br>12 июля 2022<small/>
+</div>

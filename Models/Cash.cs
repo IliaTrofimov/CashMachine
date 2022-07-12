@@ -4,11 +4,12 @@
     {
         public int Nominal = 100;
         public int Count;
-
-        public Cash(int nominal, int count)
+        public int CassetteId;
+        public Cash(int nominal, int count, int cassette)
         {
             Nominal = nominal;
             Count = count;
+            CassetteId = cassette;
         }
 
         public static explicit operator int(Cash cash) => cash.Count * cash.Nominal;

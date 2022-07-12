@@ -34,7 +34,7 @@ namespace CashMachineApp.Controllers
             int minNominal = Cassette.MinNominal;
             int cash = viewModel.RequestedCash;
             viewModel.OutputCash.Clear();
-
+            int i = 0;
             foreach (var cassette in viewModel.Machine.Cassettes
                 .Where(c => c.IsReady)
                 .OrderByDescending(c => c.NominalValue)
@@ -46,7 +46,7 @@ namespace CashMachineApp.Controllers
                 if (count != 0)
                 {
                     count = Math.Min(cassette.BanknotesCount, count);
-                    viewModel.OutputCash.Add(new(cassette.NominalValue, count));
+                    viewModel.OutputCash.Add(new(cassette.NominalValue, count, i++));
                     cash -= count * cassette.NominalValue;
                     cassette.BanknotesCount -= count;
                 }

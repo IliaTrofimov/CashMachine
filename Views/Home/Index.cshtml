@@ -65,7 +65,12 @@
         @if (Model.OutputCash.Count != 0)
         {
             <label>
-                Банкноты: @foreach (var c in Model.OutputCash) { <i style="background-color: lightgray; margin-right: 8px; padding-right:2px;">@c.ToString()</i>}
+                Банкноты: @foreach (var c in Model.OutputCash) 
+                { 
+                  <span style="background-color: lightgray; margin-right: 10px;">
+                    <i>@c.ToString()</i> <small>[кассета @(c.CassetteId + 1)]</small>
+                  </span>
+                }
                 → @Model.OutputCash.Sum(c => (int)c) руб.
             </label>
             <br>
@@ -83,7 +88,7 @@
     В списке кассет можно настроить каждую кассету, после чего введите сумму денег, которую необходимо "обналичить", 
     и нажмите <span class="bg-secondary text-white">Обработать</span>, чтобы произвести вычисления.
     Если в аппарате достаточно банкнот (и содержащие их кассеты работают), будет показано, 
-    сколько банкнот некотрого номинала было выдано.
+    сколько банкнот некотрого номинала было выдано. При выдаче денег, наличные в банкомате тратятся.
 </div>
 <br>
 <div class="text-center text-muted">

@@ -3,7 +3,7 @@ namespace CashMachineApp.Models
 {
     public class CashMachine
     {
-        public List<Cassette> Cassettes { get; set; } = new List<Cassette>() { new Cassette() };
+        public List<Cassette> Cassettes { get; set; } = new List<Cassette>() { new Cassette() { Id = 1 } };
 
         public int CassettesCount
         {
@@ -15,7 +15,7 @@ namespace CashMachineApp.Models
                 
                 if (Cassettes.Count < value)
                     while (Cassettes.Count < value)
-                        Cassettes.Add(new Cassette());
+                        Cassettes.Add(new Cassette() { Id = Cassettes.Count + 1 });
                 else
                     Cassettes.RemoveRange(value - 1, Cassettes.Count - value);
             }

@@ -3,7 +3,7 @@
 namespace CashMachineApp.Models
 {
     public class Cassette
-    {
+    { 
         private static readonly SortedSet<int> values = new() { 100, 200, 500, 1000, 2000, 5000 };
 
         private int nominalValue = 100;
@@ -30,6 +30,8 @@ namespace CashMachineApp.Models
                 banknotes = value;
             }
         }
+
+        public int Id { get; set; }
 
         public static IEnumerable<int> NominalValues => values;
 

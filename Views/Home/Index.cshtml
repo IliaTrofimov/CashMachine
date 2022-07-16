@@ -6,7 +6,8 @@
 
 
 <div class="text-center">
-    <h1 class="display-4">Модель банкомата</h1>
+    <h1 class="display-4" style="margin-bottom:0px">Модель банкомата</h1>
+    <small><a href="/">сбросить данные</a></small>
 </div>
 <div class="container">
      @using (Html.BeginForm("SetCassettes", "Home", FormMethod.Post))
@@ -27,7 +28,7 @@
             @for (var i = 0; i < Model.Machine.Cassettes.Count; i++)
             {
             <div class="card card-body" style="max-width: 180px !important; margin-right: 8px; margin-bottom: 5px; padding-top: 17px;">
-                <small style="position: absolute; top:0;">Кассета @(i+1)</small>
+                <small style="position: absolute; top:0;">Кассета @Model.Machine.Cassettes[i].Id</small>
                 <div class="form-group">
                     <label>Кол-во банкнот</label>
                     <input name="Machine.Cassettes[@i].BanknotesCount" value="@Model.Machine.Cassettes[i].BanknotesCount" type="number" min="0" class="form-control form-control-sm">
@@ -42,6 +43,7 @@
                         <input class="form-check-input" asp-for="Machine.Cassettes[i].IsReady" type="checkbox" value=""/>
                     </div>
                 </div>
+                <input type="hidden"  name="Machine.Cassettes[@i].Id" asp-for="Machine.Cassettes[i].Id">
             </div>
             }
         </div>
@@ -68,7 +70,7 @@
                 Банкноты: @foreach (var c in Model.OutputCash) 
                 { 
                   <span style="background-color: lightgray; margin-right: 10px;">
-                    <i>@c.ToString()</i> <small>[кассета @(c.CassetteId + 1)]</small>
+                    <i>@c.ToString()</i> <small>[кассета @c.CassetteId]</small>
                   </span>
                 }
                 → @Model.OutputCash.Sum(c => (int)c) руб.
@@ -88,9 +90,12 @@
     В списке кассет можно настроить каждую кассету, после чего введите сумму денег, которую необходимо "обналичить", 
     и нажмите <span class="bg-secondary text-white">Обработать</span>, чтобы произвести вычисления.
     Если в аппарате достаточно банкнот (и содержащие их кассеты работают), будет показано, 
-    сколько банкнот некотрого номинала было выдано. При выдаче денег, наличные в банкомате тратятся.
+    сколько банкнот некотрого номинала было выдано. При выдаче денег, наличные в банкомате тратятся. 
 </div>
 <br>
 <div class="text-center text-muted">
-    <small>Трофимов Илья<br>12 июля 2022<small/>
+    <small>
+        Трофимов Илья<br>
+        <strike>12</strike> 16 июля 2022
+    </small>
 </div>
